@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>QUANTUM PIXEL - Decode Image</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <main class="container">
+            <h1>Decoding Image</h1>
+
+            {% if error %}
+                <div class="error">
+                    <p>{{ error }}</p>
+                    <p><a href="/">Return to Home</a></p>
+                </div>
+            {% elif filename %}
+                <p>This will be deleted later, please download immediately.</p>
+                <div class="preview">
+                    <img id="uploaded-image" src="/static/images/{{ filename }}" alt="uploaded image">
+                    <br>
+                    <br>
+                    <a class="primary" href="/static/images/{{ filename }}" download="decode.png">Download</a>   
+                </div>
+            {% else %}
+                <div class="preview">
+                    Loading, please wait patiently. (If the wait time is too long, it is recommended to use the local version.)
+                </div>
+            {% endif %}
+        </main>
+    </body>
+    <script src="/static/decode.js"></script>
+</html>

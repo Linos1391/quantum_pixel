@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>QUANTUM PIXEL - Upload Image</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <main class="container">
+            <h1>Upload an Image</h1>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form class="upload-form" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" required>
+                <button type="submit" name="upload_type" value="encode">Encode</button>
+                <button type="submit" name="upload_type" value="decode">Decode</button>
+            </form>
+        </main>
+    </body>
+</html>

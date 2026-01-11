@@ -1,0 +1,7 @@
+{% if filename and img_name %}
+    <h2>Result</h2>
+    <img id="result-image" src="/static/images/{{ filename }}" alt="result image">
+    <br>
+    <br>
+    <a class="primary" href="/static/images/{{ filename }}" download="{{ img_name }}.png">Download</a>   
+{% endif %}

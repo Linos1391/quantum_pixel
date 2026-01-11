@@ -1,0 +1,12 @@
+[project]
+name = "quantum-pixel"
+version = "0.1.0"
+description = "When both YES and NO are existed. Only human with emotions can comprehend."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.128.0",
+    "numpy>=2.4.0",
+    "pillow>=12.0.0",
+    "stegano>=0.9.7",
+]

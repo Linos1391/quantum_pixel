@@ -1,0 +1,5 @@
+# cSpell:ignore qrcode numpy fastapi stegano
+pillow
+numpy
+fastapi[standard]
+stegano
