@@ -39,10 +39,10 @@ content-type = "text/markdown"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.md"
-end-before = "(assets/mermaid.png)"
+end-before = "assets/mermaid.png"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
-text = "(https://github.com/Linos1391/quantum-pixel/blob/master/assets/mermaid.png?raw=true)"
+text = "https://github.com/Linos1391/quantum-pixel/blob/master/assets/mermaid.png?raw=true"
 
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "README.md"
