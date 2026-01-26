@@ -54,10 +54,9 @@ async def lifespan(_app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST"],
+    max_age=100,
 )
 app.mount("/static", StaticFiles(directory=os.path.join(PROJECT_ROOT, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(PROJECT_ROOT, "templates"))
@@ -84,9 +83,14 @@ async def upload(request: Request):
     form = await request.form()
     file = form.get("file")
 
-    if file.size > 1_073_741_824: # Im poor u know lol
+    if not file or not form.get("upload_type"):
         return templates.TemplateResponse("index.html",
-                                          {"request": request, "error": "File should be under 1GB"})
+                                          {"request": request, "error": "Unable to load form."})
+
+    # Im poor u know lol. You can delete this line, just acknowledge your cpu power.
+    if file.size > 1_073_741_824:
+        return templates.TemplateResponse("index.html",
+                                          {"request": request, "error": "File should be <1GB."})
     _, ext = os.path.splitext(file.filename)
     if ext.lower() not in (".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"):
         return templates.TemplateResponse("index.html",
@@ -123,10 +127,43 @@ system. If it continues to happen, install the local version.</p>"""
     generator = Generator(input_path)
     match form.get("selected"):
         case "panel_preview":
-            try:
+            if input_path and form.get("intensity") and form.get("save_path"):
+                try:
+                    uid: str = uuid.uuid4().hex
+                    future_item = asyncio.get_event_loop().run_in_executor(
+                        executor, generator.preview, float(form.get("intensity")))
+                    future_item.add_done_callback(lambda _: _remove_from_list(uid))
+                    background_task.update({uid: future_item})
+
+                    json_data: dict = {}
+                    if os.path.exists(json_path):
+                        json_data = json.load(open(json_path, "rt", encoding="utf-8"))
+                    json_data.update({"uid": uid})
+                    with open(json_path, "wt", encoding="utf-8") as f:
+                        json.dump(json_data, f)
+                        f.close()
+
+                    preview_img = await future_item
+                except asyncio.exceptions.CancelledError:
+                    return templates.TemplateResponse("encode.html",
+                            {"request": request, "filename": img, "error": "User exited."})
+                except AssertionError as err:
+                    return templates.TemplateResponse("encode.html",
+                                                {"request": request, "filename": img, "error": err})
+                preview_img.save(output_path)
+
+                with open(json_path, "wt", encoding="utf-8") as f:
+                    json_data.update({"preview": form.get("save_path")})
+                    json.dump(json_data, f)
+                    f.close()
+                return templates.TemplateResponse("encode_panel.html",
+                    {"request": request, "filename": form.get("save_path"), "img_name": "preview"})
+
+        case "panel_steganography":
+            if input_path and form.get("disguise") and form.get("save_path"):
                 uid: str = uuid.uuid4().hex
-                future_item = asyncio.get_event_loop().run_in_executor(
-                    executor, generator.preview, float(form.get("intensity")))
+                future_item=asyncio.get_event_loop().run_in_executor(executor, Steganography.encode,
+                    Image.open(form.get("disguise").file), Image.open(input_path), output_path)
                 future_item.add_done_callback(lambda _: _remove_from_list(uid))
                 background_task.update({uid: future_item})
 
@@ -138,52 +175,24 @@ system. If it continues to happen, install the local version.</p>"""
                     json.dump(json_data, f)
                     f.close()
 
-                preview_img = await future_item
-            except asyncio.exceptions.CancelledError:
+                try:
+                    if await future_item:
+                        with open(json_path, "wt", encoding="utf-8") as f:
+                            json_data.update({"steganography": form.get("save_path")})
+                            json.dump(json_data, f)
+                            f.close()
+                        return templates.TemplateResponse("encode_panel.html", {"request": request,
+                                "filename": form.get("save_path"), "img_name": "stegano"})
+                except asyncio.exceptions.CancelledError:
+                    return templates.TemplateResponse("encode.html",
+                            {"request": request, "filename": img, "error": "User exited."})
                 return templates.TemplateResponse("encode.html",
-                        {"request": request, "filename": img, "error": "Dont exit next time then"})
-            except AssertionError as err:
-                return templates.TemplateResponse("encode.html",
-                                            {"request": request, "filename": img, "error": err})
-            preview_img.save(output_path)
+                    {"request": request, "filename": img, "error": (
+                        "Cannot encode the image within. Try to decrease the size of real image "
+                        "size or increase the size of the disguise image.")})
 
-            with open(json_path, "wt", encoding="utf-8") as f:
-                json_data.update({"preview": form.get("save_path")})
-                json.dump(json_data, f)
-                f.close()
-            return templates.TemplateResponse("encode_panel.html",
-                {"request": request, "filename": form.get("save_path"), "img_name": "preview"})
-
-        case "panel_steganography":
-            uid: str = uuid.uuid4().hex
-            future_item = asyncio.get_event_loop().run_in_executor(executor, Steganography.encode,
-                Image.open(form.get("disguise").file), Image.open(input_path), output_path)
-            future_item.add_done_callback(lambda _: _remove_from_list(uid))
-            background_task.update({uid: future_item})
-
-            json_data: dict = {}
-            if os.path.exists(json_path):
-                json_data = json.load(open(json_path, "rt", encoding="utf-8"))
-            json_data.update({"uid": uid})
-            with open(json_path, "wt", encoding="utf-8") as f:
-                json.dump(json_data, f)
-                f.close()
-
-            try:
-                if await future_item:
-                    with open(json_path, "wt", encoding="utf-8") as f:
-                        json_data.update({"steganography": form.get("save_path")})
-                        json.dump(json_data, f)
-                        f.close()
-                    return templates.TemplateResponse("encode_panel.html",
-                        {"request":request, "filename":form.get("save_path"), "img_name":"stegano"})
-            except asyncio.exceptions.CancelledError:
-                return templates.TemplateResponse("encode.html",
-                        {"request": request, "filename": img, "error": "Dont exit next time then"})
-            return templates.TemplateResponse("encode.html",
-                {"request": request, "filename": img, "error": (
-                    "Cannot encode the image within. Try to decrease the size of real image "
-                    "size or increase the size of the disguise image.")})
+    return templates.TemplateResponse("encode.html",
+                        {"request": request, "filename": img, "error": "Unable to load form."})
 
 @app.get("/decode/{img}", response_class=HTMLResponse)
 async def start_decode(request: Request, img: str):
@@ -208,6 +217,11 @@ async def end_decode(request: Request, img: str):
 
     json_path = os.path.join(IMAGE_DIR, f"{os.path.splitext(img)[0]}.json")
 
+    if not payload.get("save_path"):
+        return templates.TemplateResponse("decode.html",
+                        {"request": request, "filename": img, "error": "Unable to load payload."})
+
+
     uid: str = uuid.uuid4().hex
     future_item = asyncio.get_event_loop().run_in_executor(executor, Steganography.decode,
         Image.open(input_path), output_path)
@@ -229,7 +243,7 @@ async def end_decode(request: Request, img: str):
         os.remove(input_path)
     except asyncio.exceptions.CancelledError:
         return templates.TemplateResponse("encode.html",
-                {"request": request, "filename": img, "error": "Dont exit next time then"})
+                {"request": request, "filename": img, "error": "User exited."})
     return templates.TemplateResponse("decode.html", {"request": request, "error": (
         "This image cannot be decoded. If you encoded with the provided tools, "
         "email me or create a Github issue and I will see what can be assisted."
