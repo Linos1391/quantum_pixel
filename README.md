@@ -44,7 +44,7 @@ I made this in response of AI slop. Those so-called AI artists had gone too far 
 
 ![rendered mermaid](assets/mermaid.png)
 <details>
-  <summary>Mermaid source (github only)</summary>
+  <summary>Mermaid source</summary>
 
 ```mermaid
 flowchart LR
