@@ -18,7 +18,7 @@
 [python-shield]: https://img.shields.io/badge/python-3.14+-yellow
 [python-url]: https://www.python.org/downloads/
 
-<img alt="preview image" width="75%" src="https://github.com/Linos1391/quantum-pixel/blob/master/assets/preview.png">
+<img alt="preview image" width="75%" src="https://github.com/Linos1391/quantum-pixel/blob/master/assets/preview.png?raw=true">
 </div>
 <br>
 
@@ -42,19 +42,21 @@
 
 I made this in response of AI slop. Those so-called AI artists had gone too far that annoy me... I am not against the development of AI, but the disrespects towards ARTS and ARTISTS.
 
+![rendered mermaid (github only)](assets/mermaid.png)
 <details>
-    <summary>View preview images. (Github supported only)</summary>
+  <summary>Mermaid source (github only)</summary>
 
-    ```mermaid
-    flowchart LR
-        A( <img src='assets/material.jpeg' width='30%'> )  
-        B( <img src='assets/encoded.jpeg' width='30%'> )  
-        C( <img src='assets/grok.jpeg' width='30%'> )  
+  ```mermaid
+  flowchart LR
+    A[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/material.jpeg?raw=true" width="200" height="200"/>]
+    B[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/encoded.jpeg?raw=true" width="200" height="200"/>]
+    C[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/grok.jpeg?raw=true" width="200" height="200"/>]
 
-        A -->|Encode| B
-        B -->|Decode| A
-        B -->|Grok edited| C
-    ```
+    A-->|Encode| B
+    B -->|Decode| A
+    B -->|Grok edited| C
+  ```
+
 </details>
 
 <br>
