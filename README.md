@@ -1,6 +1,6 @@
 <div align="center">
 
-# Quantum Pixel
+<h1>Quantum Pixel</h1>
 
 **When everything is possibility.**
 
@@ -18,8 +18,8 @@
 [python-shield]: https://img.shields.io/badge/python-3.14+-yellow
 [python-url]: https://www.python.org/downloads/
 
+<img alt="preview image" width="75%" src="https://github.com/Linos1391/quantum-pixel/blob/master/assets/preview.png">
 </div>
-
 <br>
 
 >"When I think about it, maybe quantum mechanics was made to prevent AI. Like being both wave and particle, we as players perceive the environment normally, and computers got strokes while analyzing. Thats why we forgot the precedent memory to prevent AI screenshot reality."
@@ -28,19 +28,60 @@
 
 <br>
 
-# Introduction
+- [1. Introduction](#1-introduction)
+  - [1.1. Web service](#11-web-service)
+  - [1.2. Local system](#12-local-system)
+- [2. Can I host from Github?](#2-can-i-host-from-github)
+- [3. License](#3-license)
+- [4. Disclaimer](#4-disclaimer)
 
-I made this in response of AI slop. Those so-called AI artists had gone too far that annoy me... I am not against the development of AI, but the disrespects towards ARTS and ARTISTS.
-
-**Notice:** it is still in development and not guaranteed protected from img2img. I tried on Grok some details are detected, most are NOT :D.
-
-- Web service (really slow so be patient!): [quantum-pixel.onrender.com/](https://quantum-pixel.onrender.com/)
-
-- Local system: WIP
 
 <br>
 
-# Can I host from [Github](https://github.com/Linos1391/quantum-pixel)?
+# 1. Introduction
+
+I made this in response of AI slop. Those so-called AI artists had gone too far that annoy me... I am not against the development of AI, but the disrespects towards ARTS and ARTISTS.
+
+<details>
+    <summary>View preview images. (Github supported only)</summary>
+
+    ```mermaid
+    flowchart LR
+        A( <img src='assets/material.jpeg' width='30%'> )  
+        B( <img src='assets/encoded.jpeg' width='30%'> )  
+        C( <img src='assets/grok.jpeg' width='30%'> )  
+
+        A -->|Encode| B
+        B -->|Decode| A
+        B -->|Grok edited| C
+    ```
+</details>
+
+<br>
+
+**Notice:** it is still in development and not guaranteed protected from img2img. I tried on Grok some details are detected, most are NOT :D.
+
+
+## 1.1. Web service
+
+Really slow so be patient!
+- [quantum-pixel.onrender.com/](https://quantum-pixel.onrender.com/)
+
+## 1.2. Local system
+
+```
+git clone https://github.com/Linos1391/quantum-pixel.git
+cd quantum-pixel
+```
+
+| uv (recommended)                                         | python                            |
+| -------------------------------------------------------- | --------------------------------- |
+| `uv sync --locked --no-dev && uv cache prune --ci`       | `pip install -r requirements.txt` |
+| `uv run -- uvicorn quantum_pixel.web:app --host 0.0.0.0` | `fastapi run src`                 |
+
+<br>
+
+# 2. Can I host from [Github](https://github.com/Linos1391/quantum-pixel)?
 
 - For private use or sharing with friends? Absolutely yes. I am using the free version of Render right now and totally recommend to try.
 
@@ -48,12 +89,12 @@ I made this in response of AI slop. Those so-called AI artists had gone too far 
 
 <br>
 
-# License
+# 3. License
 
 [GNU GPLv3](LICENSE)
 
 <br>
 
-# Disclaimer
+# 4. Disclaimer
 
 Remember, this will NOT 100% prevent AI from analyzing; in fact, the process of Steganography is open-source. I am still researching for better algorithms and would love to hear from YOU!
