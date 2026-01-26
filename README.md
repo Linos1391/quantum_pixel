@@ -48,9 +48,9 @@ I made this in response of AI slop. Those so-called AI artists had gone too far 
 
 ```mermaid
 flowchart LR
-  A[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/material.jpeg?raw=true" width="200" height="200"/>]
-  B[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/encoded.jpeg?raw=true" width="200" height="200"/>]
-  C[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/grok.jpeg?raw=true" width="200" height="200"/>]
+  A[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/material.jpeg?raw=true" width="100" height="100"/><br><label>material.jpeg</label>]
+  B[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/encoded.jpeg?raw=true" width="100" height="100"/><br><label>encoded.jpeg</label>]
+  C[<img src="https://github.com/Linos1391/quantum-pixel/blob/dev/assets/grok.jpeg?raw=true" width="100" height="100"/><br><label>grok.jpeg</label>]
 
   A-->|Encode| B
   B -->|Decode| A
