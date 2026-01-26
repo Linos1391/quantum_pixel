@@ -42,7 +42,7 @@
 
 I made this in response of AI slop. Those so-called AI artists had gone too far that annoy me... I am not against the development of AI, but the disrespects towards ARTS and ARTISTS.
 
-![rendered mermaid (github only)](assets/mermaid.png)
+![rendered mermaid](assets/mermaid.png)
 <details>
   <summary>Mermaid source (github only)</summary>
 
